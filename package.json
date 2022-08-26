@@ -1,0 +1,32 @@
+{
+  "name": "stacc-code-challenge",
+  "version": "1.0.0",
+  "description": "My solution to the stacc coding challenge of sept. 22",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nathsten/stacc-code-challenge.git"
+  },
+  "keywords": [
+    "code-challenge",
+    "stacc",
+    "KYC",
+    "PEP",
+    "Banking-system",
+    "Fintech"
+  ],
+  "author": "Nathaniel Stensen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nathsten/stacc-code-challenge/issues"
+  },
+  "homepage": "https://github.com/nathsten/stacc-code-challenge#readme",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "express": "^4.18.1"
+  }
+}
