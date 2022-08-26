@@ -10,7 +10,52 @@
 </head>
 <body>
 
-    <div id="main">
+    <div id="main" class="py-10 px-10">
+
+        <div class="text-center">
+            <h1 class="text-3xl">STACC PEP CHECK</h1>
+        </div>
+
+        <!-- Menu -->
+
+        <div class="border border-blue-800 rounded-md grid grid-cols-4 text center w-3/4 relative my-10" style="left: 12.5%">
+
+
+            <span v-bind:class="{'bg-blue-500': pg.showFnLn}" @click="changePg('showFnLn')" class="cursor-pointer text-center border-r border-blue-800 py-2 hover:bg-blue-300 transition-all">
+                <h1>Search by name</h1>
+            </span>
+
+            <span v-bind:class="{'bg-blue-500': pg.showEmail}" @click="changePg('showEmail')" class="cursor-pointer text-center border-r border-blue-800 py-2 hover:bg-blue-300 transition-all">
+                <h1>Search by email</h1>
+            </span>
+
+            <span v-bind:class="{'bg-blue-500': pg.showDoB}" @click="changePg('showDoB')" class="cursor-pointer text-center border-r border-blue-800 py-2 hover:bg-blue-300 transition-all">
+                <h1>Search by date of birth</h1>
+            </span>
+
+            <span v-bind:class="{'bg-blue-500': pg.showOcupation}" @click="changePg('showOcupation')" class="cursor-pointer text-center py-2 hover:bg-blue-300 transition-all">
+                <h1>Search by ocupation</h1>
+            </span>
+
+        </div>
+
+        <!-- Forms -->
+
+            <!-- Search by name -->
+            <div v-if="pg.showFnLn" class="w-3/4 relative grid grid-cols-3" style="left: 12.5%;">
+                <label>Firstname: <br>
+                    <input v-model="name.firstName" type="text" class="outline-none border-blue-900 border rounded-md py-1 text-xl px-2" placeholder="John">
+                </label>
+
+                <label>Lastname: <br>
+                    <input v-model="name.lastName" type="text" class="outline-none border-blue-900 border rounded-md py-1 text-xl px-2" placeholder="Doe">
+                </label>
+
+                <div>
+                    <br>
+                    <button @click="searchByName" class="border-blue-900 border rounded-md py-1 text-xl px-2 bg-blue-300 hover:bg-blue-500 transition-all">Search</button>
+                </div>
+            </div>
 
     </div>
     

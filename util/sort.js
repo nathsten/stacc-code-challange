@@ -8,7 +8,18 @@
 const sortByName = ( allPEP, name ) => new Promise((resolve, reject) => {
     try{
         const names = name.split(" ");
-        const PEPs = allPEP.find(person => names.forEach(n => person.name.includes(n)));
+        const PEPs = [];
+
+        names.forEach((name1, i) => {
+            const P = allPEP.find(person => person.name.includes(name1));
+            // maybe skip this....
+            if(P.name.includes(names[i-1]) && i>0){
+                PEPs.push(P);
+            }
+            else if(P.name.includes(names[i+1]) && i<2){
+                PEPs.push(P);
+            }
+        })
         resolve(PEPs);
         return;
     }

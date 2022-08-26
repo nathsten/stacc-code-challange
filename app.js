@@ -26,13 +26,15 @@ app.post('/KYC', async (req, res) => {
                 // Sort and return by name.
 
                 const { name } = req.body;
+                console.log(name);
 
                 const PEPs = await sortByName(PEP, name);
                 res.send({status: "OK", PEPs});
                 return;
             }
-            catch{
+            catch(err){
                 res.send({status: "Invalid name"});
+                console.log(err);
                 return;
             }
 
