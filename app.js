@@ -10,12 +10,17 @@ const app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
+app.use('/search', express.static('public/search'));
 app.use('/', express.static('public/home'));
 app.use('/vue', express.static('public/vue'));
 
 app.listen(PORT, e => e ? console.log(`Something went wrong...\n${e}`) : console.log(`Server running on http://127.0.0.1:5050/`));
 
-app.post('/KYC', async (req, res) => {
+app.post('/KYC', (req, res) => {
+
+});
+
+app.post('/KYCSearch', async (req, res) => {
 
     const { category } = req.body;
 

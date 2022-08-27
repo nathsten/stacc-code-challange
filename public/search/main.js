@@ -9,7 +9,7 @@ const makeInit = data => {
     }
 }
 
-// const main = () => {
+const main = () => {
 
 const app = new Vue({
     el: "#main",
@@ -53,7 +53,7 @@ const app = new Vue({
             }
     
             const init = makeInit({name: `${app.name.firstName} ${app.name.lastName}`, category: 'name'});
-            const get = await fetch('/KYC', init);
+            const get = await fetch('/KYCSearch', init);
             const res = await get.json();
             
             if(res.status === "OK"){
@@ -73,7 +73,7 @@ const app = new Vue({
             }
     
             const init = makeInit({email: app.email.toLoweCase(), category: 'email'});
-            const get = await fetch('/KYC', init);
+            const get = await fetch('/KYCSearch', init);
             const res = await get.json();
             
             if(res.status === "OK"){
@@ -117,7 +117,7 @@ const app = new Vue({
             }
     
             const init = makeInit({DoB: `${app.dateInpt.year}-${app.dateInpt.month}-${app.dateInpt.date}`, category: 'DoB', month: +app.dateInpt.month});
-            const get = await fetch('/KYC', init);
+            const get = await fetch('/KYCSearch', init);
             const res = await get.json();
             
             if(res.status === "OK"){
@@ -137,7 +137,7 @@ const app = new Vue({
             }
     
             const init = makeInit({ocupation: app.ocupation, category: 'Ocupation'});
-            const get = await fetch('/KYC', init);
+            const get = await fetch('/KYCSearch', init);
             const res = await get.json();
             
             if(res.status === "OK"){
@@ -176,6 +176,6 @@ const app = new Vue({
     }
 })
 
-// }
+}
 
-// main();
+main();
