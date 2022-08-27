@@ -7,19 +7,9 @@
  */
 const sortByName = ( allPEP, name ) => new Promise((resolve, reject) => {
     try{
-        const names = name.split(" ");
-        const PEPs = [];
+        const names = name.toLowerCase().split(" ");
+        const PEPs = allPEP.filter(person => person.name ? names.every(name => person.name.toLowerCase().includes(name)): false);;
 
-        names.forEach((name1, i) => {
-            const P = allPEP.find(person => person.name.includes(name1));
-            // maybe skip this....
-            if(P.name.includes(names[i-1]) && i>0){
-                PEPs.push(P);
-            }
-            else if(P.name.includes(names[i+1]) && i<2){
-                PEPs.push(P);
-            }
-        })
         resolve(PEPs);
         return;
     }
@@ -42,7 +32,7 @@ const sortByName = ( allPEP, name ) => new Promise((resolve, reject) => {
             reject("Invalid email format");
             return;
         }
-        const PEPs = allPEP.find(person => person.emails.includes(email));
+        const PEPs = allPEP.filter(person => person.emails ? person.emails.toLowerCase().includes(email): false);
         resolve(PEPs);
         return;
     }
@@ -55,13 +45,20 @@ const sortByName = ( allPEP, name ) => new Promise((resolve, reject) => {
  * Sorts out PEPs by their date of birth.
  * @param {Object[]} allPEP 
  * @param {string} DoB 
+ * @param {number} month 
  * @returns {Promise<Object[]>} returns in the same format as given, just as a promise. 
  */
- const sortByDoB = ( allPEP, DoB ) => new Promise((resolve, reject) => {
+ const sortByDoB = ( allPEP, DoB, month ) => new Promise((resolve, reject) => {
     try{
+        // Slight modification to the string splice function to fit my prupouse.
+        String.prototype.splice = function(idx, rem, str) {
+            return this.slice(0, idx) + str + this.slice(idx + Math.abs(rem));
+        };
         const DoBRegEx = /^[0-9]{4}[-\s\.]\b([1-9]|1[0-2])\b[-\s\.]\b([1-9]|[12][0-9]|3[0-1])\b$/;
         if(DoBRegEx.test(DoB)){
-            const PEPs = allPEP.find(person => person.birth_date === DoB);
+            (month < 10 ? DoB = DoB.splice(5, 0, "0"): DoB = DoB);
+            console.log(month)
+            const PEPs = allPEP.filter(person => person.birth_date ? person.birth_date === DoB: false);
             resolve(PEPs);
             return;
         }
@@ -92,6 +89,7 @@ const sortByName = ( allPEP, name ) => new Promise((resolve, reject) => {
     }
     catch(error){
         reject(error);
+        return;
     }
 });
 
@@ -103,10 +101,13 @@ const sortByName = ( allPEP, name ) => new Promise((resolve, reject) => {
  */
  const sortByOcupation = ( allPEP, ocupation ) => new Promise((resolve, reject) => {
     try{
-        const PEPs = allPEP.find(person => person.dataset.includes(ocupation));
+        const PEPs = allPEP.filter(person => person.dataset ? person.dataset.toLowerCase().includes(ocupation.toLowerCase()): false);
+        resolve(PEPs);
+        return;
     }
     catch(error){
         reject(error);
+        return;
     }
 });
 

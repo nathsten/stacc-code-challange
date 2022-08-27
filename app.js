@@ -26,7 +26,6 @@ app.post('/KYC', async (req, res) => {
                 // Sort and return by name.
 
                 const { name } = req.body;
-                console.log(name);
 
                 const PEPs = await sortByName(PEP, name);
                 res.send({status: "OK", PEPs});
@@ -55,9 +54,9 @@ app.post('/KYC', async (req, res) => {
         case "DoB":
             try{
                 // Sort and return by date of brith.
-                const { DoB } = req.body;
+                const { DoB, month } = req.body;
                 
-                const PEPs = await sortByDoB(PEP, DoB);
+                const PEPs = await sortByDoB(PEP, DoB, month);
                 res.send({status: "OK", PEPs});
                 return;
             }
