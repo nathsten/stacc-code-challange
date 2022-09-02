@@ -37,17 +37,20 @@ const orgScan = async ( OrgRols, org, fetch) => new Promise(async (resolve, reje
     try{
         const [ roller ] = OrgRols.roller;
         const { fornavn, etternavn } = roller.person.navn;
-        console.log(fornavn, etternavn); 
         const fullName = `${fornavn ? fornavn + ' ' : ''}${etternavn ? etternavn + ' ' : ''}`;
         const getPEP = await fetch(`https://code-challenge.stacc.dev/api/pep?name=${fullName}`);
         const PEP = await getPEP.json();
+        // Again most likely only one person.
         const person = PEP.hits[0];
         if(person){
             const isSanctionated = await PEPScan();
             resolve({
                 sanctioned: isSanctionated.sanctioned,
                 sanctions: isSanctionated.sanctions,
-                isBankrupt: org.konkurs
+                isBankrupt: org.konkurs,
+                person: {
+                    name: ""
+                }
             });
             return;
         }
@@ -55,7 +58,9 @@ const orgScan = async ( OrgRols, org, fetch) => new Promise(async (resolve, reje
             resolve({
                 sanctioned: false,
                 sanctions: '',
-                isBankrupt: org.konkurs
+                isBankrupt: org.konkurs,
+                person: person ? person : {name: ""},
+                fullName,
             });
             return;
         }

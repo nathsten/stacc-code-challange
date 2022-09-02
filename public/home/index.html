@@ -10,8 +10,128 @@
 </head>
 <body>
     
-    <div id="app">
+    <div id="app" class="my-5">
+        <div class="text-center">
+            <h1 class="text-3xl">STACC PEP CHECK</h1>
+        </div>
+
+        <div class="grid grid-cols-2 w-3/4 relative text-center my-10" style="left: 12.5%; ">
+
+
+            <!-- Menu -->
+            <div class="w-full min-h-96 max-h-full px-5 border-r border-blue-800">
+
+                <div class="text-center border-b border-blue-800 mb-5">
+                    <h1 class="text-2xl">Search</h1>
+                </div>
+
+                <div class="border border-blue-800 rounded-md grid grid-cols-2 text center w-full relative">
+
+                    <span v-bind:class="{'bg-blue-500': pg.showFnLn}" @click="changePg('showFnLn')" class="cursor-pointer text-center border-r border-blue-800 py-2 hover:bg-blue-300 transition-all">
+                        <h1>Search by name</h1>
+                    </span>
+    
+                    <span v-bind:class="{'bg-blue-500': pg.showOrg}" @click="changePg('showOrg')" class="cursor-pointer text-center border-l border-blue-800 py-2 hover:bg-blue-300 transition-all">
+                        <h1>Search by Organization nr.</h1>
+                    </span>
+    
+                </div>
+
+
+                <!-- Form -->
+                <div>
+                    <!-- Name -->
+                    <div v-if="pg.showFnLn" class="w-full relative grid grid-rows-3 text-left">
+                        <label class="py-2">Firstname: <br>
+                            <input v-on:keyUp.Enter="searchByName" v-model="name.firstName" type="text" class="outline-none border-blue-900 border rounded-md py-1 text-xl px-2" placeholder="John">
+                        </label>
+
+                        <label class="py-2">Lastname: <br>
+                            <input v-on:keyUp.Enter="searchByName" v-model="name.lastName" type="text" class="outline-none border-blue-900 border rounded-md py-1 text-xl px-2" placeholder="Doe">
+                        </label>
         
+                        <div class="py-2 text-center">
+                            <button @click="searchByName" class="border-blue-900 border rounded-md py-1 text-xl px-2 bg-blue-300 hover:bg-blue-500 transition-all">Search</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-if="pg.showOrg" class="w-full relative grid grid-rows-2 text-left">
+                    <label class="py-2">Organization number: <br>
+                        <input v-on:keyUp.Enter="searchByOrgNr" v-model="orgNr" type="text" class="outline-none border-blue-900 border rounded-md py-1 text-xl px-2 w-96" placeholder="123 234 345">
+                    </label>
+    
+                    <div class="text-center py-2">
+                        <button @click="searchByOrgNr" class="border-blue-900 border rounded-md py-1 text-xl px-2 bg-blue-300 hover:bg-blue-500 transition-all">Search</button>
+                    </div>
+                </div>
+    
+
+            </div>
+
+            <!-- Results -->
+            <div class="w-full min-h-96 max-h-full px-5 border-l border-blue-800">
+                <div class="text-center border-b border-blue-800 mb-5">
+                    <h1 class="text-2xl">Results</h1>
+                </div>
+
+
+                <!-- If sanctionated warning will appear -->
+                <div v-if="sanctions.sanctioned">
+                    <div class="w-full border-4 border-red-800 rounded-md bg-red-600 text-center">
+                        <h1 class="text-white text-3xl">{{pg.showOrg ? 'A PERSON IN THIS ORGANIZATION IS SANCTIONED !': String(person.name).toUpperCase() + ' IS SANCTIONED!'}}</h1>
+                    </div>
+
+                    <div class="grid grid-rows-2 w-full text-2xl text-left px-2 border-b-4 border-blue-800 mb-2">
+                        <span>
+                            <label>Sanctions: {{sanctions.sanctions}}</label>
+                        </span>
+
+                        <span>
+                            <label>Name: {{person.name}}</label>
+                        </span>
+                    </div>
+                </div>
+
+                <div v-if="bankrupt">
+                    <div class="w-full border-4 border-red-800 rounded-md bg-red-600 text-center">
+                        <h1 class="text-white text-3xl">{{org.navn}} IS BANKRUPT!</h1>
+                    </div>
+                </div>
+
+                <!-- If not Sanctionated approvement will appear -->
+                <div v-if="!sanctions.sanctioned && (person.name || usefullInfo.name)">
+                    <div class="w-full border-4 border-green-800 rounded-md bg-green-600 text-center">
+                        <h1 class="text-white text-3xl">{{pg.showOrg ? 'This Organization is Safe': String(person.name).toUpperCase() + ' is Safe'}}</h1>
+                    </div>
+                </div>
+
+                <div v-if="usefullInfo" class="w-full px-2 grid grid-rows-1 border-b-4 border-blue-800 mb-2">
+                    <div v-for="index in orgIndexes" class="grid grid-cols-2 w-full px-5 border-b border-blue-800 text-xl text-left">
+                        <span>{{index}}:</span>
+                        <span>{{usefullInfo[index]}}</span>
+                    </div>
+                </div>
+
+                <div v-if="person.name" class="w-full px-2 grid grid-rows-1">
+
+                    <div v-if="sanctions.sanctioned && usefullInfo">
+                        <h1 class="text-2xl border-b-4 border-blue-800 mb-2">Sanctioned Person.</h1>
+                    </div>
+
+                    <div v-for="index in personIndexes" class="grid grid-cols-2 w-full px-5 border-b border-blue-800 text-xl text-left">
+                        <span>{{String(index).replace("_", " ")}}:</span>
+                        <span>{{person[index]}}</span>
+                    </div>
+
+                </div>
+                
+
+            </div>
+
+        </div>
+
+
     </div>
 
     <script src="main.js"></script>

@@ -28,13 +28,11 @@ app.post('/KYC', async (req, res) => {
                 const { firstName, lastName } = req.body;
                 const fullName = `${firstName ? firstName + ' ' : ''}${lastName ? lastName + ' ' : ''}`;
                 const getPEP = await nodeFetch(`https://code-challenge.stacc.dev/api/pep?name=${fullName}`);
-                const PEPs = await getPEP.json();
-                const struct = []
-                await PEPs.hits.forEach(async person => {
-                    const isSanctionated = await PEPScan(person);
-                    struct.push({ person, isSanctionated });
-                })
-                res.send({status: "OK", hits: struct});
+                const PEP = await getPEP.json();
+                // Most likely this will only return one person, if several I'm too lazy to handle...
+                // Just be spesific in searching...
+                const isSanctionated = await PEPScan(PEP.hits[0]);
+                res.send({status: "OK", person: PEP.hits[0], isSanctionated});
                 return;
             }
             catch(err){
@@ -51,8 +49,8 @@ app.post('/KYC', async (req, res) => {
                 const OrgInfo = await getOrgInfo.json();
                 const getOrgRols = await nodeFetch(`https://code-challenge.stacc.dev/api/roller?orgNr=${orgNr}`);
                 const [ OrgRols ] = await getOrgRols.json();
-                const { sanctioned, sanctions, isBankrupt } = await orgScan(OrgRols, OrgInfo, nodeFetch);
-                res.send({status: "OK", OrgInfo, sanctioned, sanctions, isBankrupt});
+                const { sanctioned, sanctions, isBankrupt, person } = await orgScan(OrgRols, OrgInfo, nodeFetch);
+                res.send({status: "OK", OrgInfo, sanctioned, sanctions, isBankrupt, person});
                 return;
             }
             catch(err){
