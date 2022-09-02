@@ -2,19 +2,16 @@ const { readFileSync, writeFileSync } = require('fs');
 
 const rawPEP = readFileSync('../pep.csv', 'utf-8');
 
-const linesPEP = rawPEP.replaceAll("\"", "").split(/\n/);
-const headings = linesPEP.shift().replaceAll("\r", "").split(",");
+const linesPEP = rawPEP.split(/\n/);
+const headings = linesPEP.shift().split(",").map(e => e.replaceAll('\"', '').replaceAll('\r', ''));
 
 const allPEP = [];
 
 linesPEP.forEach(person => {
-    person = person.replaceAll("\r", "");
-    const data = person.split(",");
+    const data = person.split(",").map(e => e.replaceAll('\"', '').replaceAll('\r', ''));
     const struct = {}
     for(let i=0; i<headings.length; ++i){
-        const heading = headings[i];
-        const indexDataPerson = data[i];
-        struct[heading] = indexDataPerson;
+        struct[headings[i]] = data[i]
     }
     allPEP.push(struct);
 });

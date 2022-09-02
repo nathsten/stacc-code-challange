@@ -1,8 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { readFileSync } = require('fs');
+const nodeFetch = require('node-fetch');
 const PEP = JSON.parse(readFileSync('pep.json'));
 const { sortByName, sortByEmail, sortByDoB, sortByOcupation } = require('./util/sort');
+const { PEPScan, orgScan } = require('./util/scan');
 const PORT = 5050;
 
 const app = express();
@@ -16,8 +18,57 @@ app.use('/vue', express.static('public/vue'));
 
 app.listen(PORT, e => e ? console.log(`Something went wrong...\n${e}`) : console.log(`Server running on http://127.0.0.1:5050/`));
 
-app.post('/KYC', (req, res) => {
+app.post('/KYC', async (req, res) => {
 
+    const { category } = req.body;
+
+    switch(category){
+        case "name":
+            try{
+                const { firstName, lastName } = req.body;
+                const fullName = `${firstName ? firstName + ' ' : ''}${lastName ? lastName + ' ' : ''}`;
+                const getPEP = await nodeFetch(`https://code-challenge.stacc.dev/api/pep?name=${fullName}`);
+                const PEPs = await getPEP.json();
+                const struct = []
+                await PEPs.hits.forEach(async person => {
+                    const isSanctionated = await PEPScan(person);
+                    struct.push({ person, isSanctionated });
+                })
+                res.send({status: "OK", hits: struct});
+                return;
+            }
+            catch(err){
+                res.send({status: "Invalid name"});
+                console.log(err);
+                return;
+            }
+
+        case "orgNr":
+            try{
+                // Sort out and return by email.
+                const { orgNr } = req.body;
+                const getOrgInfo = await nodeFetch(`https://code-challenge.stacc.dev/api/enheter?orgNr=${orgNr}`);
+                const OrgInfo = await getOrgInfo.json();
+                const getOrgRols = await nodeFetch(`https://code-challenge.stacc.dev/api/roller?orgNr=${orgNr}`);
+                const [ OrgRols ] = await getOrgRols.json();
+                const { sanctioned, sanctions, isBankrupt } = await orgScan(OrgRols, OrgInfo, nodeFetch);
+                res.send({status: "OK", OrgInfo, sanctioned, sanctions, isBankrupt});
+                return;
+            }
+            catch(err){
+                res.send({status: "Invalid orgNr"});
+                console.log(err)
+                return;
+            }
+        default: 
+            res.send({status: "Invalid category."});
+            return;
+    }
+
+    // const { firstName, lastName } = req.body;
+    // const getPEP = await nodeFetch(`https://code-challenge.stacc.dev/api/pep?name=${firstName}%20${lastName}`);
+    // const resPEP = await getPEP.json(); 
+    // res.send(resPEP);
 });
 
 app.post('/KYCSearch', async (req, res) => {
