@@ -84,6 +84,8 @@ It was hard finding sanctioned people ect, but I made a few Screenshots of how i
 
 * For example, I expected Putin to be    sanctioned, which he wasn't...
 
+> As you can see in the example images if a person or organization is sanctioned or bankrupt you will be notified immediately. This is because this product is meant for banks to quickly do a screening of the given person and decide whether they're good for a loan or not.
+
 > I also had to learn what KYC meant, and how it works. 
 
 > I didn't spend too much time on the front-end to make the page responsive etc, I was more focused on making a full stack application  that works. 
