@@ -35,6 +35,7 @@ app.post('/KYC', async (req, res) => {
                 res.send({status: "OK", person: PEP.hits[0], isSanctionated});
                 return;
             }
+            // catching takes care of invalid name. 
             catch(err){
                 res.send({status: "Invalid name"});
                 console.log(err);
@@ -43,16 +44,20 @@ app.post('/KYC', async (req, res) => {
 
         case "orgNr":
             try{
-                // Sort out and return by email.
+                // Sort out and return by orgNr.
                 const { orgNr } = req.body;
+                // fetching info about given organization
                 const getOrgInfo = await nodeFetch(`https://code-challenge.stacc.dev/api/enheter?orgNr=${orgNr}`);
                 const OrgInfo = await getOrgInfo.json();
+                // fetching rolls in the given organization
                 const getOrgRols = await nodeFetch(`https://code-challenge.stacc.dev/api/roller?orgNr=${orgNr}`);
                 const [ OrgRols ] = await getOrgRols.json();
+                // Scanning given organization.
                 const { sanctioned, sanctions, isBankrupt, person } = await orgScan(OrgRols, OrgInfo, nodeFetch);
                 res.send({status: "OK", OrgInfo, sanctioned, sanctions, isBankrupt, person});
                 return;
             }
+            // Catching takes cafe if the given orgNr doesn't exist. 
             catch(err){
                 res.send({status: "Invalid orgNr"});
                 console.log(err)
@@ -62,11 +67,6 @@ app.post('/KYC', async (req, res) => {
             res.send({status: "Invalid category."});
             return;
     }
-
-    // const { firstName, lastName } = req.body;
-    // const getPEP = await nodeFetch(`https://code-challenge.stacc.dev/api/pep?name=${firstName}%20${lastName}`);
-    // const resPEP = await getPEP.json(); 
-    // res.send(resPEP);
 });
 
 app.post('/KYCSearch', async (req, res) => {
@@ -120,12 +120,16 @@ app.post('/KYCSearch', async (req, res) => {
             }
 
         case "Ocupation":
-            {
+            try{
                 // Sort and return by ocupation.
                 const { ocupation } = req.body;
 
                 const PEPs = await sortByOcupation(PEP, ocupation);
                 res.send({status: "OK", PEPs});
+                return;
+            }
+            catch{
+                res.send({status: "Invalid date of Ocupation"});
                 return;
             }
 

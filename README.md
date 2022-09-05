@@ -1,7 +1,11 @@
 # Stacc code challenge 2021
 
 ## Description
-> I chose to make a full-stack aplication consisting of an API that's searching for sanctions etc in your request, and an interactive front-end design that lets you verify the people and organizations that you're searching for. 
+> I chose to make a full-stack application consisting of an API that's searching for sanctions etc in your request, and an interactive front-end design that lets you verify the people and organizations that you're searching for. 
+
+> My main focus was on the API, but I wanted to make a full stack application that lets you do the KYC screening of all the people the given API includes. 
+
+> I did not put much effort into the design, but by using TailwindCSS and Vue.js it was easy to make something that works. 
 
 ## How to run the project
 1. Clone the repo.
@@ -16,7 +20,7 @@
     npm install
     ````
 
-4. When all the dependencies is installed run this command to start the program:
+4. When all the dependencies are installed run this command to start the program:
 
     ````
     npm run start
@@ -24,36 +28,38 @@
 
 5. Go to ````http://127.0.0.1:5050/````
 
-## Desctiption of the code
+## Description of the code
 You'll find the code for the API in 
-````./app.js````
-In my option the code is pretty much self explainatory, and comments are to be found to understand the code better.
+[app.js](./app.js)
+The code is very much self explainatory, but there are comments to make it more readable. 
+
+The API provides the possibility to search in the CSV file based on name, email, occupation, and date of birth, and a full KYC check of a PEP, based on the given API for this code competition. 
 
 In the following folder
-````./util````
+[/util](./util/)
 you'll find my utility functions, that does all the work.
 
-````csvParser.js````
+[./util/csvParser.js](./util/csvParser.js)
 is my attempt to parse the pep.csv file into a readable JSON file.
 
-````scan.js````
-does most of the work for scanning people and organizations for sacntions etc. 
+[./util/scan.js](./util/scan.js)
+does most of the work for scanning people and organizations for sanctions etc. 
 
-````sort.js````
+[./util/sort.js](./util/sort.js)
 consists of four functions to sort people from the CSV file. 
 
 In the 
-````./public````
+[./public](./public)
 folder, you'll find the front-end code for the interactive form. 
 
-````./home````
-Is the main landing page that lets you search people and orgs. 
+[./public/home](./public/home)
+Is the main landing page that lets you search  for people and orgs. 
 
-````./seach````
-is where you can seach in the CSV file based on name, email, occupation, and date of birth. 
+[./public/search](./public/search/)
+is where you can search in the CSV file based on name, email, occupation, and date of birth. 
 
 ## Previews
-It was hard finding sanctioned people ect, but I made a few Sceenshots of how it would look in different results.
+It was hard finding sanctioned people ect, but I made a few Screenshots of how it would look in different results.
 
 ### Safe person
 
@@ -72,10 +78,18 @@ It was hard finding sanctioned people ect, but I made a few Sceenshots of how it
 
 ## Comments
 
-> I found the pep.csv file hard to work with. It seemes like some people have a few more empty slots than others. Resulting in a twisted parsed file. For example parsing the first 500 was no problem, but after that birtdays kept showing up where the name should be, etc. Ended up just using the API.
+> I found the pep.csv file hard to work with. It seems like some people have a few more empty slots than others, resulting in a twisted parsed file. For example, parsing the first 500 was no problem, but after that birthdays kept showing up where the name should be, etc. Ended up just using the API.
 
-> As mentioned above I don't think the provided API is up to date, becuase finding sanctioned people was harder than expected. 
+> As mentioned above I don't think the provided API is up to date because finding sanctioned people was harder than expected. 
 
-> I also had to learn what KYC ment, and how it works. 
+* For example, I expected Putin to be    sanctioned, which he wasn't...
 
-> I did't spend too much time on the front-end to make the page responsive etc, I was more focued on making a full stack aplication that works. 
+> I also had to learn what KYC meant, and how it works. 
+
+> I didn't spend too much time on the front-end to make the page responsive etc, I was more focused on making a full stack application  that works. 
+
+> More detailed arguments for why I solved my problems how are documented as comments above or complementary to the code. 
+
+> I downloaded the CDN version of Vue.js to make the job for frontend design a bit easier. 
+
+> I also used TailwindCSS instead of just writing my own CSS to speed up the process of front end development. 
