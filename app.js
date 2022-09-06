@@ -5,7 +5,7 @@ const nodeFetch = require('node-fetch');
 const PEP = JSON.parse(readFileSync('pep.json'));
 const { sortByName, sortByEmail, sortByDoB, sortByOcupation } = require('./util/sort');
 const { PEPScan, orgScan } = require('./util/scan');
-const PORT = process.env.POR || 5050;
+const PORT = process.env.PORT || 5050;
 
 const app = express();
 
