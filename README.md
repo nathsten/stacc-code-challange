@@ -63,7 +63,7 @@ Is the main landing page that lets you search  for people and orgs.
 is where you can search in the CSV file based on name, email, occupation, and date of birth. 
 
 ## Previews
-It was hard finding sanctioned people ect, but I made a few Screenshots of how it would look in different results.
+It was hard finding sanctioned people ect, but I made a few Screenshots of how it would look with different results.
 
 ### Safe person
 
