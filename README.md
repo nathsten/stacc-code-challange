@@ -5,6 +5,10 @@
 
 > My main focus was on the API, but I wanted to make a full stack application that lets you do the KYC screening of all the people the given API includes. 
 
+> The API is created in nodejs using the express framework. 
+
+> Front-end is created using the Vue.js framework combined with TailwindCSS. 
+
 > I did not put much effort into the design, but by using TailwindCSS and Vue.js it was easy to make something that works. 
 
 ## How to run the project
